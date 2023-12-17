@@ -2,13 +2,13 @@ import csv
 from models import Customer, Invoice, InvoiceItem
 
 
-def read_customer_sample() -> set:
+def read_customer_sample(filename) -> set:
     """ This function is ment to read the customer_sample csv file and 
         return a set of customer_codes """
     
     customer_ids = set()
 
-    with open ('customer_sample.csv', 'r') as file:
+    with open (filename, 'r') as file:
         csv_reader = csv.DictReader(file)
 
         for row in csv_reader:
@@ -17,13 +17,13 @@ def read_customer_sample() -> set:
     return customer_ids
 
 
-def make_customer_file(customer_ids:set) -> list:
+def make_customer_file(filename, customer_ids:set) -> list:
     """ This function reads the customer csv file and
             creates a new customer csv file of customers whos customer_code is part of the customers_ids set """
 
     customers = []
 
-    with open ('customer.csv', 'r') as file:
+    with open (filename, 'r') as file:
         csv_reader = csv.DictReader(file)
 
         for row in csv_reader:
@@ -42,14 +42,14 @@ def make_customer_file(customer_ids:set) -> list:
     print("New customer file created")
 
 
-def make_invoces_file(customer_ids:set) -> list:
+def make_invoces_file(filename, customer_ids:set) -> list:
     """ This function reads the invoices csv file and
         returns a list of Invoice objects if their customer_codes are in the customer_ids set 
         and writes them to a new invoices csv file """
 
     invoices = []
 
-    with open ('invoice.csv','r') as file:
+    with open (filename,'r') as file:
         csv_reader = csv.DictReader(file)
 
         for row in csv_reader:
@@ -68,7 +68,7 @@ def make_invoces_file(customer_ids:set) -> list:
     return invoices
 
 
-def make_invoice_items_file(invoices:list) -> list:
+def make_invoice_items_file(filename, invoices:list) -> list:
     """ This function reads the invoce items csv file and 
         returns a list of InvoiceItems objects if their invoice_code is in the list of invoices
         and writes them to a new invoice items csv file """
@@ -76,7 +76,7 @@ def make_invoice_items_file(invoices:list) -> list:
     invoice_items = []
     invoice_ids = [invoice.invoice_code for invoice in invoices]
 
-    with open('invoice_items.csv', 'r') as file:
+    with open(filename, 'r') as file:
         csv_reader = csv.DictReader(file)
         for row in csv_reader:
             if row['INVOICE_CODE'] in invoice_ids:
